@@ -5,10 +5,14 @@ import android.os.AsyncTask;
 import android.os.Vibrator;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +41,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
         String serverResponse = sendRequest(parameterValue,ipAddress,portNumber, parameter);
         if (serverResponse != null && serverResponse != "ERROR"){
             Vibrator vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(50);
+            vibrator.vibrate(20);
         }
         return null;
     }
@@ -50,7 +54,9 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
 
         try {
             /* Creación de cliente HTTP */
-            HttpClient httpclient = new DefaultHttpClient();
+            HttpParams params = new BasicHttpParams();
+            params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+            HttpClient httpclient = new DefaultHttpClient(params);
 
             /* Definición de URL - Estructura: http://IP_ADDRESS:PORT/?parameter=SOMETHING */
             URI website = new URI("http://"+ipAddress+":"+portNumber+"/?"+parameterName+"="+parameterValue);
