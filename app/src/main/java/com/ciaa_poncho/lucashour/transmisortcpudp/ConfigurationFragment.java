@@ -51,8 +51,14 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
 
     public void onClick(View view) {
         if (view.getId() == R.id.button){
-            GlobalData.singleton_instance.setIpAddress(ip_address.getText().toString());
-            GlobalData.singleton_instance.setPortNumber(Integer.parseInt(port_number.getText().toString()));
+
+            if (ip_address.getText().toString().isEmpty())
+                ip_address.setText("127.0.0.0");
+
+            GlobalData.getInstance().setIpAddress(ip_address.getText().toString());
+
+            GlobalData.getInstance().setPortNumber(Integer.parseInt(port_number.getText().toString()));
+
             Toast.makeText(view.getContext(), "Datos configurados correctamente", Toast.LENGTH_SHORT).show();
         }
     }

@@ -8,8 +8,8 @@ android {
         applicationId "com.ciaa_poncho.lucashour.transmisortcpudp"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {

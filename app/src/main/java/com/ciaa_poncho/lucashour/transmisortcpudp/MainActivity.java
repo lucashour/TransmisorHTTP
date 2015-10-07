@@ -2,6 +2,8 @@ package com.ciaa_poncho.lucashour.transmisortcpudp;
         import android.app.AlertDialog;
         import android.app.FragmentManager;
         import android.content.DialogInterface;
+        import android.content.pm.PackageInfo;
+        import android.content.pm.PackageManager;
         import android.support.v4.widget.DrawerLayout;
         import android.support.v7.app.ActionBarActivity;
         import android.os.Bundle;
@@ -139,9 +141,17 @@ public class MainActivity extends ActionBarActivity {
 
         switch(menuItemId){
             case R.id.about:
+                String version = "";
+
+                try {
+                    version = this.getPackageManager().getPackageInfo(this.getPackageName(),0).versionName;
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
+
                 AlertDialog.Builder message = new AlertDialog.Builder(this);
                 message.setTitle("Información");
-                message.setMessage("Versión: 1.0 (2015)\nFacultad de Ingeniería - Universidad Nacional de La Plata\nProyecto: CIAA");
+                message.setMessage("Versión: "+ version + "\nFacultad de Ingeniería - Universidad Nacional de La Plata\nProyecto: CIAA");
                 message.setCancelable(false);
                 message.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
 
@@ -168,5 +178,3 @@ public class MainActivity extends ActionBarActivity {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }*/
 }
-
-

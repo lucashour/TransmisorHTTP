@@ -2,7 +2,7 @@ package com.ciaa_poncho.lucashour.transmisortcpudp;
 
 public class GlobalData {
 
-	public static GlobalData singleton_instance = null;
+	private static GlobalData singleton_instance = null;
 	private String ip_address;
 	private int port_number;
 
@@ -33,6 +33,5 @@ public class GlobalData {
 	public String getIpAddress(){
 		return ip_address;
 	}
-
 
 }

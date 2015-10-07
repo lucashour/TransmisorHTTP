@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class BehaviourFragment extends Fragment implements View.OnClickListener{
 
@@ -58,7 +59,10 @@ public class BehaviourFragment extends Fragment implements View.OnClickListener{
 
         HttpRequestAsyncTask http_request;
 
-        switch (view.getId()){
+        if (GlobalData.getInstance().getIpAddress() == null){
+            Toast.makeText(this.getActivity().getApplicationContext(),"Configuración de dirección IP destino requerida.",Toast.LENGTH_SHORT).show();
+        }
+        else switch (view.getId()){
             case R.id.up_button:
                 http_request = new HttpRequestAsyncTask(this.getActivity().getApplicationContext(),"up",ip,port,"action");
                 http_request.execute();

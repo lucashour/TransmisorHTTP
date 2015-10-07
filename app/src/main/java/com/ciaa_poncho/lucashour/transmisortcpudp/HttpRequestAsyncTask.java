@@ -36,7 +36,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
         this.parameter = parameter;
     }
 
-     /* Método a ejecutar en background por tarea asincrónica */
+    /* Método a ejecutar en background por tarea asincrónica */
     protected Void doInBackground(Void... params) {
         String serverResponse = sendRequest(parameterValue,ipAddress,portNumber, parameter);
         if (serverResponse != null && serverResponse != "ERROR"){
@@ -53,7 +53,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
         String serverResponse = "ERROR";
 
         try {
-            /* Creación de cliente HTTP */
+            /* Creación de cliente HTTP versión 1.1 */
             HttpParams params = new BasicHttpParams();
             params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
             HttpClient httpclient = new DefaultHttpClient(params);
@@ -77,6 +77,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
 
             /* Cierre de la conexión */
             server_reply.close();
+            httpclient.getConnectionManager().shutdown();
 
         } catch (ClientProtocolException e) {
             // Error de HTTP
