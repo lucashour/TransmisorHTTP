@@ -7,12 +7,10 @@ import android.os.Vibrator;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 
@@ -26,21 +24,19 @@ import java.net.URISyntaxException;
 public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
 
     private String ipAddress, portNumber;
-    private String parameter;
     private String parameterValue;
     private Context context;
 
-    public HttpRequestAsyncTask(Context context, String parameterValue, String ipAddress, String portNumber, String parameter){
+    public HttpRequestAsyncTask(Context context, String parameterValue, String ipAddress, String portNumber){
         this.context = context;
         this.ipAddress = ipAddress;
         this.parameterValue = parameterValue;
         this.portNumber = portNumber;
-        this.parameter = parameter;
     }
 
     /* Método a ejecutar en background por tarea asincrónica */
     protected Void doInBackground(Void... params) {
-        String serverResponse = sendRequest(parameterValue,ipAddress,portNumber, parameter);
+        String serverResponse = sendRequest(parameterValue,ipAddress,portNumber);
         if (serverResponse != null && serverResponse != "ERROR"){
             Vibrator vibrator = (Vibrator) this.context.getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(20);
@@ -51,7 +47,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
     /*  Método de envío de mensaje HTTP al servidor
         Retorna la respuesta del servidor
     */
-    private String sendRequest(String parameterValue, String ipAddress, String portNumber, String parameterName) {
+    private String sendRequest(String parameterValue, String ipAddress, String portNumber) {
         String serverResponse = "ERROR";
 
         try {
@@ -64,7 +60,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
                     (0, false));
 
             /* Definición de URL - Estructura: http://IP_ADDRESS:PORT/?parameter=SOMETHING */
-            URI website = new URI("http://"+ipAddress+":"+portNumber+"/?"+parameterName+"="+parameterValue);
+            URI website = new URI("http://"+ipAddress+":"+portNumber+"/?"+parameterValue);
 
             /* Construcción de la solicitud HTTP */
             HttpGet getRequest = new HttpGet(); // Creación de HTTP GET
@@ -82,7 +78,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
             serverResponse = in.readLine(); // Respuesta del servidor
 
             /* Cierre de la conexión */
-            server_reply.close();
+            //server_reply.close();
             //httpClient.getConnectionManager().shutdown();
 
         } catch (ClientProtocolException e) {
