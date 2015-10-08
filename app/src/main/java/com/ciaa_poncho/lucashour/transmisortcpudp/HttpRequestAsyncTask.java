@@ -10,7 +10,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 
@@ -56,16 +58,20 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
             /* Creación de cliente HTTP versión 1.1 */
             HttpParams params = new BasicHttpParams();
             params.setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-            HttpClient httpclient = new DefaultHttpClient(params);
+            //params.setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 1000);
+            DefaultHttpClient httpClient = new DefaultHttpClient(params);
+            httpClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler
+                    (0, false));
 
             /* Definición de URL - Estructura: http://IP_ADDRESS:PORT/?parameter=SOMETHING */
             URI website = new URI("http://"+ipAddress+":"+portNumber+"/?"+parameterName+"="+parameterValue);
+
             /* Construcción de la solicitud HTTP */
             HttpGet getRequest = new HttpGet(); // Creación de HTTP GET
             getRequest.setURI(website); // Seteo de URL para el HTTP GET
 
             /* Envío de la solicitud HTTP */
-            HttpResponse response = httpclient.execute(getRequest);
+            HttpResponse response = httpClient.execute(getRequest);
 
             /* Recepción de respuesta HTTP del servidor */
             InputStream server_reply = null;
@@ -77,7 +83,7 @@ public class HttpRequestAsyncTask extends AsyncTask<Void, Void, Void> {
 
             /* Cierre de la conexión */
             server_reply.close();
-            httpclient.getConnectionManager().shutdown();
+            //httpClient.getConnectionManager().shutdown();
 
         } catch (ClientProtocolException e) {
             // Error de HTTP

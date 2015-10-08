@@ -65,7 +65,7 @@ public class BehaviourFragment extends Fragment implements View.OnClickListener{
         else switch (view.getId()){
             case R.id.up_button:
                 http_request = new HttpRequestAsyncTask(this.getActivity().getApplicationContext(),"up",ip,port,"action");
-                http_request.execute();
+                http_request.executeOnExecutor(HttpRequestAsyncTask.THREAD_POOL_EXECUTOR);
                 break;
             case R.id.down_button:
                 http_request = new HttpRequestAsyncTask(this.getActivity().getApplicationContext(),"down",ip,port,"action");

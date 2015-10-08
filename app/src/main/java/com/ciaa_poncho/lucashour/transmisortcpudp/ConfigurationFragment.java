@@ -53,7 +53,7 @@ public class ConfigurationFragment extends Fragment implements View.OnClickListe
         if (view.getId() == R.id.button){
 
             if (ip_address.getText().toString().isEmpty())
-                ip_address.setText("127.0.0.0");
+                ip_address.setText("192.168.4.1");
 
             GlobalData.getInstance().setIpAddress(ip_address.getText().toString());
 
